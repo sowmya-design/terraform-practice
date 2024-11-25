@@ -37,13 +37,13 @@ resource "aws_route_table" "sowmya-route"{
 }
 #create subnet associations
 resource "aws_route_table_association" "sowmya-rt-associations" {
-route_table_id = aws_route_table.sowmya-ig.id  
+  subnet_id = aws_subnet.sowmya-subnet.id
+  route_table_id = aws_route_table.sowmya-route.id  
 }
-
 #create security groups
 resource "aws_security_group" "sowmya-sg" {
-    name = "allow all traffic"
     vpc_id=aws_vpc.sowmya_vpc.id
+    name = "allow-ssh-http"
     tags={
         Name="sg-projectk"
     }
@@ -51,8 +51,8 @@ resource "aws_security_group" "sowmya-sg" {
     description = "inbound traffic"
     from_port = 22
     to_port   = 22
-    protocol  = "TCP"
-    cidr_blocks = ["0.0.0.0.0/0"]
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
     
   }
   egress{
